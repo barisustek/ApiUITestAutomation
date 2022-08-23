@@ -8,7 +8,9 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         snippets = CucumberOptions.SnippetType.CAMELCASE,
         glue = "StepDefinitions",
-        features = "src/test/resources/features"
+        features = "src/test/resources/features",
+        plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
 )
 public class ApiUITestAutomationRunner {
+
 }

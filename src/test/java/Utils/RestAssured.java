@@ -112,4 +112,10 @@ public class RestAssured extends ConfigReader {
 
     }
 
+    public String getResponseBodyAsString(){
+
+        return response.asString();
+
+    }
+
 }

@@ -12,11 +12,13 @@
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <restassured.version>5.1.1</restassured.version>
-        <cucumber.version>7.5.0</cucumber.version>
-        <picocontaioner.version>7.5.0</picocontaioner.version>
+        <cucumber.version>6.8.1</cucumber.version>
+        <picocontaioner.version>6.8.1</picocontaioner.version>
         <lombok.version>1.18.24</lombok.version>
         <gson.version>2.9.0</gson.version>
         <jsonassert.version>1.5.1</jsonassert.version>
+        <extendreports.version>3.1.1</extendreports.version>
+        <aventstack.version>5.0.9</aventstack.version>
     </properties>
 
     <dependencies>
@@ -58,6 +60,16 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber6-adapter</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>4.1.7</version>
         </dependency>
     </dependencies>
 
