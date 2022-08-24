@@ -17,8 +17,11 @@
         <lombok.version>1.18.24</lombok.version>
         <gson.version>2.9.0</gson.version>
         <jsonassert.version>1.5.1</jsonassert.version>
-        <extendreports.version>3.1.1</extendreports.version>
-        <aventstack.version>5.0.9</aventstack.version>
+        <extendreports.version>1.2.0</extendreports.version>
+        <aventstack.version>4.1.7</aventstack.version>
+        <webdrivermanager.version>5.3.0</webdrivermanager.version>
+        <jsonassert.version>1.5.1</jsonassert.version>
+        <selenium.version>4.4.0</selenium.version>
     </properties>
 
     <dependencies>
@@ -26,11 +29,13 @@
             <groupId>org.skyscreamer</groupId>
             <artifactId>jsonassert</artifactId>
             <version>1.5.1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -42,6 +47,7 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -64,12 +70,26 @@
         <dependency>
             <groupId>tech.grasshopper</groupId>
             <artifactId>extentreports-cucumber6-adapter</artifactId>
-            <version>1.2.0</version>
+            <version>${extendreports.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
-            <version>4.1.7</version>
+            <version>${aventstack.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
