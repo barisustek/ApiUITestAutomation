@@ -10,5 +10,4 @@ public class ApiUITestsAutomations {
     public SeleniumUtils seleniumUtils = new SeleniumUtils();
     public Gson gsonUtils = new Gson();
 
-
 }

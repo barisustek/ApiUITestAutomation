@@ -16,6 +16,9 @@ public class LoginPage extends BasePage{
     @FindBy(id = "password")
     private WebElement passwordTextBox;
 
+    @FindBy(id = "password-error")
+    private WebElement passwordError;
+
     @FindBy(id = "login")
     private WebElement loginWithAtlassianButton;
 
@@ -37,12 +40,6 @@ public class LoginPage extends BasePage{
     public void clickLoginWithAtlassianButton(){
 
         clickWebElement(loginWithAtlassianButton);
-
-    }
-
-    public void clickLoginSubmitButton(){
-
-        clickWebElement(loginSubmitButton);
 
     }
 

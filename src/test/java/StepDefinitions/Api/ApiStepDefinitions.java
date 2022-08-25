@@ -4,10 +4,13 @@ import Models.Api.Board;
 import Models.Api.Card;
 import Models.Api.Lists;
 import StepDefinitions.ApiUITestsAutomations;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.json.JSONException;
+import org.junit.Assert;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.util.HashMap;
@@ -18,7 +21,9 @@ public class ApiStepDefinitions {
 
     ApiUITestsAutomations apiUITestsAutomations;
     String id;
-    HashMap<String,String> actualFields ;
+    String listId;
+    String cardId;
+    HashMap<String, String> actualFields;
 
     public ApiStepDefinitions(ApiUITestsAutomations apiUITestsAutomations) {
 
@@ -27,40 +32,52 @@ public class ApiStepDefinitions {
     }
 
     @DataTableType
-    public Board createBoard(Map<String,String> data){
+    public Board createBoard(Map<String, String> data) {
 
-       return Board.createBoard(data);
+        return Board.createBoard(data);
 
     }
 
     @DataTableType
-    public Lists createLists(Map<String,String> data){
+    public Lists createLists(Map<String, String> data) {
 
         return Lists.createLists(data);
 
     }
 
     @DataTableType
-    public Card createCard(Map<String,String> data){
+    public Card createCard(Map<String, String> data) {
 
         return Card.createCard(data);
 
     }
 
     @When("POST {string} endpoint is called with parameters")
-    public void postEndpointIsCalledWithParameters(String endpoint, Map<String,String> params) {
+    public void postEndpointIsCalledWithParameters(String endpoint, Map<String, String> params) {
 
         apiUITestsAutomations.restAssured.resetRestAssured();
         apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
 
         apiUITestsAutomations.restAssured.setEndpoint(endpoint)
-                                         .setMapAsQueryParameters(params)
-                                         .sendPostRequest();
+                .setMapAsQueryParameters(params)
+                .sendPostRequest();
 
     }
 
-    @When("PUT {string} endpoint is called with board id and parameters")
-    public void putEndpointIsCalledWithBoardId(String endpoint, Map<String,String> params) {
+    @When("^PUT (.*) endpoint is called for update card with card id and parameters$")
+    public void putEndpointIsCalledWithCardId(String endpoint, Map<String, String> params) {
+
+        apiUITestsAutomations.restAssured.resetRestAssured();
+        apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
+
+        apiUITestsAutomations.restAssured.setEndpoint(endpoint.replace("{id}", this.cardId.replaceAll("^\"|\"$", "")))
+                .setMapAsQueryParameters(params)
+                .sendPutRequest();
+
+    }
+
+    @When("^PUT (.*) endpoint is called for update board with board id and parameters$")
+    public void putEndpointIsCalledWithBoardId(String endpoint, Map<String, String> params) {
 
         apiUITestsAutomations.restAssured.resetRestAssured();
         apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
@@ -72,12 +89,12 @@ public class ApiStepDefinitions {
     }
 
     @When("POST {string} endpoint is called with board id and list parameters")
-    public void postEndpointIsCalledWithBoardIdAndParameters(String endpoint, Map<String,String> params) {
+    public void postEndpointIsCalledWithBoardIdAndParameters(String endpoint, Map<String, String> params) {
 
         apiUITestsAutomations.restAssured.resetRestAssured();
         apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
 
-        apiUITestsAutomations.restAssured.setEndpoint(endpoint.replace("{id}",this.id))
+        apiUITestsAutomations.restAssured.setEndpoint(endpoint.replace("{id}", this.id))
                 .setMapAsQueryParameters(params)
                 .sendPostRequest();
 
@@ -92,13 +109,13 @@ public class ApiStepDefinitions {
     }
 
     @And("POST {string} endpoint is called with list id and card parameters")
-    public void postEndpointIsCalledWithListIdAndCardParameters(String endpoint, Map<String,String> params) {
+    public void postEndpointIsCalledWithListIdAndCardParameters(String endpoint, Map<String, String> params) {
 
         apiUITestsAutomations.restAssured.resetRestAssured();
         apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
 
         apiUITestsAutomations.restAssured.setEndpoint(endpoint)
-                .setQueryParameters("idList" , this.id)
+                .setQueryParameters("idList", this.id)
                 .setMapAsQueryParameters(params)
                 .sendPostRequest();
 
@@ -112,7 +129,7 @@ public class ApiStepDefinitions {
 
     }
 
-    @And("GET {string} endpoint is called id and parameters")
+    @And("GET {string} endpoint is called with id and parameters")
     public void getEndpointIsCalledIdAndParameters(String endpoint, List<String> params) {
 
         apiUITestsAutomations.restAssured.setEndpoint(endpoint + this.id)
@@ -131,7 +148,7 @@ public class ApiStepDefinitions {
         try {
 
             JSONAssert.assertEquals(apiUITestsAutomations.gsonUtils.toJson(expectedFields.get(0)),
-                                    apiUITestsAutomations.gsonUtils.toJson(actualFields),true);
+                    apiUITestsAutomations.gsonUtils.toJson(actualFields), true);
 
         } catch (JSONException e) {
 
@@ -151,7 +168,7 @@ public class ApiStepDefinitions {
         try {
 
             JSONAssert.assertEquals(apiUITestsAutomations.gsonUtils.toJson(expectedFields.get(0)),
-                    apiUITestsAutomations.gsonUtils.toJson(actualFields),false);
+                    apiUITestsAutomations.gsonUtils.toJson(actualFields), false);
 
         } catch (JSONException e) {
 
@@ -170,7 +187,7 @@ public class ApiStepDefinitions {
         try {
 
             JSONAssert.assertEquals(apiUITestsAutomations.gsonUtils.toJson(expectedFields.get(0)),
-                    apiUITestsAutomations.gsonUtils.toJson(actualFields),false);
+                    apiUITestsAutomations.gsonUtils.toJson(actualFields), false);
 
         } catch (JSONException e) {
 
@@ -178,6 +195,94 @@ public class ApiStepDefinitions {
             e.printStackTrace();
 
         }
+
+    }
+
+    @And("^GET (.*) endpoint is called for board$")
+    public void getStringEndpointIsCalledForAllBoards(String endpoint) {
+
+        apiUITestsAutomations.restAssured.resetRestAssured();
+        apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
+
+        apiUITestsAutomations.restAssured.setEndpoint(endpoint)
+                .setQueryParameters("fields", "name")
+                .sendGetRequest();
+
+        id = JsonParser.parseString(apiUITestsAutomations.restAssured.getResponseBodyAsString()).getAsJsonArray()
+                .get(0)
+                .getAsJsonObject()
+                .get("id")
+                .toString();
+
+    }
+
+    @And("^GET (.*) endpoint is called$")
+    public void checkCardIsCreatedUsingEndpoint(String endpoint) {
+
+        apiUITestsAutomations.restAssured.resetRestAssured();
+        apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
+
+        apiUITestsAutomations.restAssured.setEndpoint(endpoint.replace("{id}", this.id.replaceAll("^\"|\"$", "")))
+                .sendGetRequest();
+
+        cardId = JsonParser.parseString(apiUITestsAutomations.restAssured.getResponseBodyAsString()).getAsJsonArray()
+                .get(0)
+                .getAsJsonObject()
+                .get("id")
+                .toString();
+
+    }
+
+    @And("^Check (.*) card is created$")
+    public void checkCardIsCreated(String cardName) {
+
+        Assert.assertEquals(cardName, JsonParser.parseString(apiUITestsAutomations.restAssured.getResponseBodyAsString())
+                .getAsJsonArray()
+                .get(0)
+                .getAsJsonObject()
+                .get("name")
+                .toString()
+                .replaceAll("^\"|\"$", ""));
+
+    }
+
+    @And("^GET (.*) endpoint is called with board Id$")
+    public void getEndpointWithBoardId(String endpoint) {
+
+        apiUITestsAutomations.restAssured.resetRestAssured();
+        apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
+
+        apiUITestsAutomations.restAssured.setEndpoint(endpoint.replace("{id}", this.id.replaceAll("^\"|\"$", "")))
+                .sendGetRequest();
+
+    }
+
+    @And("^GET (.*) list name$")
+    public void getNewListListName(String ListName) {
+
+        JsonArray outputJsonArray = JsonParser.parseString(apiUITestsAutomations.restAssured.getResponseBodyAsString()).getAsJsonArray();
+
+        for (int i = 0; i < outputJsonArray.size(); i++) {
+
+            if (outputJsonArray.get(i).getAsJsonObject().get("name").toString().contains(ListName)) {
+
+                listId = outputJsonArray.get(i).getAsJsonObject().get("id").toString();
+
+            }
+
+        }
+
+    }
+
+    @And("^PUT (.*) move card to new list with Id$")
+    public void moveCardToNewListWithId(String endpoint) {
+
+        apiUITestsAutomations.restAssured.resetRestAssured();
+        apiUITestsAutomations.restAssured = apiUITestsAutomations.restAssured.getInstance();
+
+        apiUITestsAutomations.restAssured.setEndpoint(endpoint.replace("{id}", this.cardId.replaceAll("^\"|\"$", "")))
+                .setQueryParameters("idList", this.listId.replaceAll("^\"|\"$", ""))
+                .sendPutRequest();
 
     }
 }

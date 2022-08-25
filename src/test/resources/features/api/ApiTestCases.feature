@@ -1,20 +1,20 @@
 Feature: Trello API test cases
 
-  Scenario: TestCase_001 When POST /1/boards/ endpoint called using name parameter, then the board should be created.
+  Scenario: TestCase_001 When POST /1/boards/ endpoint is called using the name parameter, then the board should be created.
     When POST "/1/boards/" endpoint is called with parameters
       | name | NewTestBoard |
     Then Http status code should be 200 and "NewTestBoard" should return in response body
 
-  Scenario: TestCase_002 When PUT /1/boards/ endpoint called using boardID and parameters, then the board should be updated according to parameters.
+  Scenario: TestCase_002 When PUT /1/boards/ endpoint is called using boardID and parameters, then the board should be updated according to parameters.
     Given POST "/1/boards/" endpoint is called with parameters
       | name | NewTestBoard_2 |
     And GET "id" from response body
-    When PUT "/1/boards/" endpoint is called with board id and parameters
+    When PUT /1/boards/ endpoint is called for update board with board id and parameters
       | name   | NewTestBoard_Updated                              |
       | desc   | The board is full of unique features to be done   |
       | closed | true                                              |
     Then Http status code should be 200
-    And GET "/1/boards/" endpoint is called id and parameters
+    And GET "/1/boards/" endpoint is called with id and parameters
       | name   |
       | desc   |
       | closed |

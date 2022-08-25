@@ -9,7 +9,6 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-//TODO : .log() will be deleted before the final version is sent
 public class RestAssured extends ConfigReader {
 
     private RestAssured apiUtilsInstance = null;
@@ -73,24 +72,24 @@ public class RestAssured extends ConfigReader {
 
     public void sendGetRequest() {
 
-        this.response = getRequestSpecification().when().log().all().get();
+        this.response = getRequestSpecification().when().get();
     }
 
     public void sendPutRequest() {
 
-        this.response = getRequestSpecification().when().log().all().put();
+        this.response = getRequestSpecification().when().put();
 
     }
 
     public void sendDeleteRequest() {
 
-        this.response = getRequestSpecification().when().log().all().delete();
+        this.response = getRequestSpecification().when().delete();
 
     }
 
     public void sendPostRequest() {
 
-        this.response = getRequestSpecification().when().log().all().post();
+        this.response = getRequestSpecification().when().post();
 
     }
 
