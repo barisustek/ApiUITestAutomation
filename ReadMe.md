@@ -14,8 +14,6 @@ Key and Token are required to run the tests. This information needs to be added 
 
 Also, user/pass information for UI tests is available in UiTestCases.feature. This information must also be entered before tests run. **(username_info, password_info)**
 
-**ps**: I never use thread.sleep() method but, I'm out of time for submitting the assignment :) If I had more time, I find a solution for this. Also, I wanted to run tests on Firefox, but again my time is up.
-
 **Programming language :**
 
 * Java: JDK16
